@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import {
   Card,
@@ -9,8 +10,11 @@ import {
   TextField,
   Grid,
 } from "@mui/material";
+import Loader from "./Loader";
 
 export default function SignupCard() {
+  const navigate = useNavigate()
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -33,7 +37,7 @@ export default function SignupCard() {
 
   const handleSignup = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     if (formData.first_name === "") {
       const error = {
         isError: true,
@@ -91,7 +95,7 @@ export default function SignupCard() {
 
       setFormError(error);
 
-      const {confirm_password, ...data} = formData
+      const { confirm_password, ...data } = formData;
 
       try {
         const response = await axios({
@@ -99,9 +103,20 @@ export default function SignupCard() {
           data: data,
           method: "POST",
         });
-        console.log(response);
+
+        if (response.data.status) {
+          setLoading(false);
+          navigate("/login")
+        } else {
+          setLoading(false);
+          const error = {
+            isError: true,
+            message: response.data.message,
+          };
+          setFormError(error);
+        }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   };
@@ -222,9 +237,12 @@ export default function SignupCard() {
               spacing={2}
             >
               <Grid item>
-                <Button type="submit" size="medium" variant="contained">
-                  Signup
-                </Button>
+                {loading && <Loader />}
+                {!loading && (
+                  <Button type="submit" size="medium" variant="contained">
+                    Signup
+                  </Button>
+                )}
               </Grid>
             </Grid>
           </CardActions>
