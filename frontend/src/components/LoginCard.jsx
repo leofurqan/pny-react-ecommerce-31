@@ -11,9 +11,13 @@ import {
   Grid,
 } from "@mui/material";
 import Loader from "./Loader";
+import {useDispatch} from "react-redux"
+import {login} from "../redux/apiCalls"
 
 export default function LoginCard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch()
+
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -57,23 +61,7 @@ export default function LoginCard() {
       setFormError(error);
 
       try {
-        const response = await axios({
-          url: "http://127.0.0.1:4000/users/login",
-          data: formData,
-          method: "POST",
-        });
-
-        if (response.data.status) {
-          setLoading(false);
-          navigate("/dashboard")
-        } else {
-          setLoading(false);
-          const error = {
-            isError: true,
-            message: response.data.message,
-          };
-          setFormError(error);
-        }
+        await login(dispatch, formData)
       } catch (error) {
         console.log(error);
       }

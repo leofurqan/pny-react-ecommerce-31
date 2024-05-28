@@ -1,33 +1,34 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import reportWebVitals from './reportWebVitals';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
-import Signup from './components/Signup';
-import Login from './components/Login';
-import Dashboard from "./components/Dashboard"
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import reportWebVitals from "./reportWebVitals";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Signup from "./components/Signup";
+import Login from "./components/Login";
+import Dashboard from "./components/Dashboard";
+import { Provider, useSelector } from "react-redux";
+import { store } from "./redux/userStore";
 
 const router = createBrowserRouter([
   {
     path: "/signup",
-    element: <Signup/>,
-  },{
+    element: <Signup />,
+  },
+  {
     path: "/login",
-    element: <Login />
-  },{
+    element: <Login />,
+  },
+  {
     path: "/dashboard",
-    element: <Dashboard />
-  }
+    element: <Dashboard />,
+  },
 ]);
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+  <Provider store={store}>
     <RouterProvider router={router} />
-  </React.StrictMode>
+  </Provider>
 );
 
 // If you want to start measuring performance in your app, pass a function
