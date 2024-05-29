@@ -2,32 +2,23 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
-import Dashboard from "./components/Dashboard";
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { store } from "./redux/userStore";
-
-const router = createBrowserRouter([
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/dashboard",
-    element: <Dashboard />,
-  },
-]);
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+import Home from "./components/Home";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
-    <RouterProvider router={router} />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element=<Login /> />
+        <Route path="/signup" element=<Signup /> />
+        <Route path="/" element=<Home /> />
+      </Routes>
+    </BrowserRouter>
   </Provider>
 );
 

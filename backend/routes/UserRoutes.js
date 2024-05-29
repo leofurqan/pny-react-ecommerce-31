@@ -23,6 +23,15 @@ const User = require("../models/UserModel");
 
 const jsonParser = bodyParser.json();
 
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find()
+    res.send({ status: true, users: users });
+  } catch(error) {
+    console.log(error)
+  }
+})
+
 router.post("/register", jsonParser, async (req, res) => {
   try {
     await addUserValidator.validateAsync(req.body);
